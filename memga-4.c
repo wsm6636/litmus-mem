@@ -265,10 +265,10 @@ static void period_timer_callback_slave(void *info){
 	}
 	update_statistics(cinfo);
 		
-	if(cinfo->limit>0){
+/*	if(cinfo->limit>0){
 		cinfo->budget=cinfo->limit;
 	}
-
+*/
 	if(cinfo->budget > global->max_budget){
 		trace_printk("ERR:c->budget(%d) > g->max_budget(%d)\n",
 				cinfo->budget,global->max_budget);
@@ -338,7 +338,7 @@ enum hrtimer_restart period_timer_callback_master(struct hrtimer *timer){
 	return HRTIMER_RESTART;
 
 }
-
+/*
 static void __update_budget(void *info){
 	struct core_info *cinfo=this_cpu_ptr(core_info);
 	cinfo->limit=(unsigned long)info;
@@ -385,7 +385,7 @@ static ssize_t memguard_limit_write(struct file *filp,const char __user *ubuf,si
 	put_online_cpus();
 	return cnt;
 }
-
+*/
 static int memguard_limit_show(struct seq_file *m,void *v){
 	int i,cpu;
 	struct memguard_info *global=&memguard_info;
@@ -400,8 +400,8 @@ static int memguard_limit_show(struct seq_file *m,void *v){
 		int budget=0,pct;
 		if(cinfo->limit>0)
 			budget=cinfo->limit;
-		WARN_ON_ONCE(budget==0);
-	//	budget=convert_mb_to_events(g_budget_max_bw);
+//		WARN_ON_ONCE(budget==0);
+		budget=convert_mb_to_events(g_budget_max_bw);
 		pct=div64_u64((u64)budget * 100 +(global->max_budget-1),(global->max_budget)?global->max_budget:1);
 		seq_printf(m,"CPU%d: %d (%dMB/s,%d pct)\n",i,budget,convert_events_to_mb(budget),pct);
 	}
@@ -417,7 +417,7 @@ static int memguard_limit_open(struct inode *inode, struct file *filp)
 
 static const struct file_operations memguard_limit_fops = {
 	.open		= memguard_limit_open,
-	.write          = memguard_limit_write,
+//	.write          = memguard_limit_write,
 	.read		= seq_read,
 	.llseek		= seq_lseek,
 	.release	= single_release,
@@ -626,15 +626,15 @@ int init_module(void){
 		struct perf_event *event;
 		struct core_info *cinfo=per_cpu_ptr(core_info,i);
 		int budget,mb;
-		if(g_budget_pct[i]==0)
+/*		if(g_budget_pct[i]==0)
 			g_budget_pct[i]=100/num_online_cpus();
 		mb=div64_u64((u64)g_budget_max_bw * g_budget_pct[i],100);
 		
 		budget=convert_mb_to_events(mb);
-
-//		budget=convert_mb_to_events(g_budget_max_bw);
-		pr_info("budget[%d]=%d(%d pct,%d MB/s)\n",i,budget,g_budget_pct[i],mb);
-//		pr_info("budget[%d] = %d (%d MB)\n", i,budget,g_budget_max_bw);		
+*/
+		budget=convert_mb_to_events(g_budget_max_bw);
+//		pr_info("budget[%d]=%d(%d pct,%d MB/s)\n",i,budget,g_budget_pct[i],mb);
+		pr_info("budget[%d] = %d (%d MB)\n", i,budget,g_budget_max_bw);		
 
 		/* create performance counter */
 		event=init_counter(i,budget);
@@ -688,9 +688,7 @@ void cleanup_module(void){
 	struct memguard_info *global=&memguard_info;
 
 //	idle_notifier_unregister(&memguard_idle_nb);
-//	smp_mb();
-//	get_cpu();
-//	smp_mb();
+
 	get_online_cpus();
 	smp_mb();
 	pr_info("kill throttle threads\n");
@@ -719,13 +717,9 @@ void cleanup_module(void){
 	
 //	unregister_hotcpu_notifier(&memguard_cpu_notifier);
 	free_percpu(core_info);
-//	free_cpumask_var(global->active_mask);
-//	free_cpumask_var(global->throttle_mask);
+
 	smp_mb();
 	put_online_cpus();
-//	smp_mb();
-//	put_cpu();
-//	smp_mb();
 	pr_info("uninstall\n");
 	return;
 }
