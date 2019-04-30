@@ -217,7 +217,6 @@ void update_statistics(struct core_info *cinfo){
 	used=(int)(new-cinfo->old_val);
 	trace_printk("count==%d,old_val==%d,used==%d\n",new,cinfo->old_val,used);
 	cinfo->old_val=new;
-//	cinfo->overall.used_budget += used;
 
 	if(cinfo->throttled_task){
 		cinfo->overall.throttled_time_ns+=(ktime_get().tv64-cinfo->throttled_time.tv64);
@@ -269,6 +268,7 @@ static void period_timer_callback_slave(void *info){
 	spin_lock(&global->lock);
 
 	if(cinfo->limit>0){
+		trace_printk("cinfo->limit==%d,cinfo->budget==%d",cinfo->limit,cinfo->budget);
 		cinfo->budget=cinfo->limit;
 	}
 
@@ -342,7 +342,7 @@ enum hrtimer_restart period_timer_callback_master(struct hrtimer *timer){
 	return HRTIMER_RESTART;
 
 }
-/*
+
 static void __update_budget(void *info){
 	struct core_info *cinfo=this_cpu_ptr(core_info);
 	cinfo->limit=(unsigned long)info;
@@ -390,7 +390,7 @@ static ssize_t memguard_limit_write(struct file *filp,const char __user *ubuf,si
 	put_online_cpus();
 	return cnt;
 }
-*/
+
 static int memguard_limit_show(struct seq_file *m,void *v){
 	int i,cpu;
 	struct memguard_info *global=&memguard_info;
@@ -422,7 +422,7 @@ static int memguard_limit_open(struct inode *inode, struct file *filp)
 
 static const struct file_operations memguard_limit_fops = {
 	.open		= memguard_limit_open,
-//	.write          = memguard_limit_write,
+	.write          = memguard_limit_write,
 	.read		= seq_read,
 	.llseek		= seq_lseek,
 	.release	= single_release,
@@ -528,9 +528,7 @@ static void __reset_stats(void *info){
 	trace_printk("CPU%d\n",smp_processor_id());
 
 	cinfo->period_cnt=0;
-	//cinfo->cur_budget=cinfo->budget;
 	cinfo->old_val=perf_event_count(cinfo->event);
-	//cinfo->overall.used_budget=0;
 	cinfo->overall.throttled_time_ns=0;
 	cinfo->overall.throttled=0;
 	cinfo->overall.throttled_error=0;
@@ -650,10 +648,7 @@ int init_module(void){
 		BUG_ON(IS_ERR(cinfo->throttle_thread));
 		kthread_bind(cinfo->throttle_thread,i);
 		wake_up_process(cinfo->throttle_thread);
-		smp_mb();		
-//		cinfo->event->pmu->add(cinfo->event,PERF_EF_START);
-//		smp_call_function_single(i,__start_counter,NULL,0);
-		smp_mb();
+		
 	}
 	put_online_cpus();
 	smp_mb();	
@@ -699,14 +694,11 @@ void cleanup_module(void){
 
 	for_each_online_cpu(i){
 		struct core_info *cinfo=per_cpu_ptr(core_info,i);
-//		cinfo->event->pmu->stop(cinfo->event, PERF_EF_UPDATE);
-//		cinfo->event->pmu->del(cinfo->event, 0);
 		smp_mb();	
 		pr_info("stopping kthrottle/%d\n",i);
 		cinfo->throttled_task=NULL;
 		kthread_stop(cinfo->throttle_thread);
 		perf_event_release_kernel(cinfo->event);
-//		cinfo->event=NULL;
 	}
 
 	smp_mb();

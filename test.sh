@@ -1,12 +1,15 @@
 #!/bin/bash
 
-sudo cat /sys/kernel/debug/tracing/trace > l.log
-sudo cat /sys/kernel/debug/tracing/trace | grep 'overflow'> over.log
-sudo cat /sys/kernel/debug/tracing/trace | grep 'ERR'> err.log
-sudo cat /sys/kernel/debug/tracing/trace | grep 'throttle'> throttle.log
-sudo cat /sys/kernel/debug/tracing/trace | grep 'perf_event_count' > perf.log
-sudo cat /sys/kernel/debug/tracing/trace | grep 'master'> master.log
-sudo cat /sys/kernel/debug/tracing/trace | grep 'count=' > count.log
-sudo cat /sys/kernel/debug/tracing/trace | grep 'slave' > slave.log
-sudo dmesg > log.txt
+sudo cat /sys/kernel/debug/tracing/trace > ./log/l.log
+sudo cat /sys/kernel/debug/tracing/trace | grep 'overflow'> ./log/over.log
+sudo cat /sys/kernel/debug/tracing/trace | grep 'ERR'> ./log/err.log
+sudo cat /sys/kernel/debug/tracing/trace | grep 'throttle'> ./log/throttle.log
+sudo cat /sys/kernel/debug/tracing/trace | grep 'perf_event_count' > ./log/perf.log
+sudo cat /sys/kernel/debug/tracing/trace | grep 'master'> ./log/master.log
+sudo cat /sys/kernel/debug/tracing/trace | grep 'count=' > ./log/count.log
+sudo cat /sys/kernel/debug/tracing/trace | grep 'slave' > ./log/slave.log
+sudo cat /sys/kernel/debug/tracing/trace | grep 'MSG' > ./log/msg.log
+sudo cat /sys/kernel/debug/tracing/trace | grep 'limit' > ./log/limit.log
+sudo cat /sys/kernel/debug/tracing/trace | grep 'memtest' > ./log/memtest.log
+sudo dmesg > ./log/log.txt
 
