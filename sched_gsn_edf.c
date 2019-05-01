@@ -436,7 +436,8 @@ static struct task_struct* gsnedf_schedule(struct task_struct * prev)
 #ifdef WANT_ALL_SCHED_EVENTS
 	TRACE_TASK(prev, "invoked gsnedf_schedule.\n");
 #endif
-
+	int budget=entry->scheduled->rt_param.task_params.mem_budget_task;
+	pr_info("budget==%d\n",budget);
 	if (exists)
 		TRACE_TASK(prev,
 			   "blocks:%d out_of_time:%d np:%d sleep:%d preempt:%d "

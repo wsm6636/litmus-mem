@@ -15,7 +15,7 @@
 #define PERIOD ms2ns(1000)
 #define DEADLINE ms2ns(2000)
 #define EXEC_COST ms2ns(20)
-//#define MEM_BUDGET 200
+#define MEM_BUDGET 200
 /*#ifdef _PERIOD
 	PERIOD=ms2ns(_PERIOD);
 #endif
@@ -348,12 +348,14 @@ int main (int argc,char **argv)
 	param.exec_cost=EXEC_COST;
 	param.relative_deadline=DEADLINE;
 	param.budget_policy=NO_ENFORCEMENT;
-//	param.mem_budget=MEM_BUDGET;
+	param.mem_budget_task=MEM_BUDGET;
 	CALL(init_litmus());
 	CALL(set_rt_task_param(gettid(),&param));
 	CALL(task_mode(LITMUS_RT_TASK));
 	do{
 		sleep_next_period();
+		CALL(get_rt_task_param(gettid(),&param));
+                printf("budget==%d\n",param.mem_budget_task);
 		do_exit=job(argc,argv);
 	}while(!do_exit);
 	CALL(task_mode(BACKGROUND_TASK));
@@ -370,6 +372,8 @@ int job (int argc,char **argv){
     a++;
     if(a>2)return 1;
     else{
+	  //  CALL(get_rt_task_param(gettid(),&param));
+	  //  printf("budget==%d\n",param.mem_budget_task);
 #ifdef PARSEC_VERSION
 #define __PARSEC_STRING(x) #x
 #define __PARSEC_XSTRING(x) __PARSEC_STRING(x)
