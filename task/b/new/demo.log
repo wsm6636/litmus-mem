@@ -1,0 +1,144 @@
+/usr/bin/gcc         -O2 -Wall -g -Wdeclaration-after-statement -D_PERIOD=50 -D_DEADLINE=100 -D_EXEC_COST=10  -D_XOPEN_SOURCE=600 -D_GNU_SOURCE -m64 -DARCH=x86_64 -I/home/wsm/litmus/liblitmus/include -I/home/wsm/litmus/liblitmus/arch/x86/include -I/home/wsm/litmus/liblitmus/arch/x86/include/uapi -I/home/wsm/litmus/liblitmus/arch/x86/include/generated/uapi -Iinclude/  -c -o 1.o 1.c
+/usr/bin/gcc         -m64                  1.o /usr/lib/x86_64-linux-gnu/libm.so  -L/home/wsm/litmus/liblitmus -llitmus -o 1
+1
+/usr/bin/gcc         -O2 -Wall -g -Wdeclaration-after-statement -D_PERIOD=100 -D_DEADLINE=200 -D_EXEC_COST=20  -D_XOPEN_SOURCE=600 -D_GNU_SOURCE -m64 -DARCH=x86_64 -I/home/wsm/litmus/liblitmus/include -I/home/wsm/litmus/liblitmus/arch/x86/include -I/home/wsm/litmus/liblitmus/arch/x86/include/uapi -I/home/wsm/litmus/liblitmus/arch/x86/include/generated/uapi -Iinclude/  -c -o 2.o 2.c
+/usr/bin/gcc         -m64                  2.o /usr/lib/x86_64-linux-gnu/libm.so  -L/home/wsm/litmus/liblitmus -llitmus -o 2
+2
+/usr/bin/gcc         -O2 -Wall -g -Wdeclaration-after-statement -D_PERIOD=150 -D_DEADLINE=300 -D_EXEC_COST=30  -D_XOPEN_SOURCE=600 -D_GNU_SOURCE -m64 -DARCH=x86_64 -I/home/wsm/litmus/liblitmus/include -I/home/wsm/litmus/liblitmus/arch/x86/include -I/home/wsm/litmus/liblitmus/arch/x86/include/uapi -I/home/wsm/litmus/liblitmus/arch/x86/include/generated/uapi -Iinclude/  -c -o 3.o 3.c
+/usr/bin/gcc         -m64                  3.o /usr/lib/x86_64-linux-gnu/libm.so  -L/home/wsm/litmus/liblitmus -llitmus -o 3
+3
+/usr/bin/gcc         -O2 -Wall -g -Wdeclaration-after-statement -D_PERIOD=200 -D_DEADLINE=400 -D_EXEC_COST=40  -D_XOPEN_SOURCE=600 -D_GNU_SOURCE -m64 -DARCH=x86_64 -I/home/wsm/litmus/liblitmus/include -I/home/wsm/litmus/liblitmus/arch/x86/include -I/home/wsm/litmus/liblitmus/arch/x86/include/uapi -I/home/wsm/litmus/liblitmus/arch/x86/include/generated/uapi -Iinclude/  -c -o 4.o 4.c
+/usr/bin/gcc         -m64                  4.o /usr/lib/x86_64-linux-gnu/libm.so  -L/home/wsm/litmus/liblitmus -llitmus -o 4
+4
+/usr/bin/gcc         -O2 -Wall -g -Wdeclaration-after-statement -D_PERIOD=250 -D_DEADLINE=500 -D_EXEC_COST=50  -D_XOPEN_SOURCE=600 -D_GNU_SOURCE -m64 -DARCH=x86_64 -I/home/wsm/litmus/liblitmus/include -I/home/wsm/litmus/liblitmus/arch/x86/include -I/home/wsm/litmus/liblitmus/arch/x86/include/uapi -I/home/wsm/litmus/liblitmus/arch/x86/include/generated/uapi -Iinclude/  -c -o 5.o 5.c
+/usr/bin/gcc         -m64                  5.o /usr/lib/x86_64-linux-gnu/libm.so  -L/home/wsm/litmus/liblitmus -llitmus -o 5
+5
+/usr/bin/gcc         -O2 -Wall -g -Wdeclaration-after-statement -D_PERIOD=300 -D_DEADLINE=600 -D_EXEC_COST=60  -D_XOPEN_SOURCE=600 -D_GNU_SOURCE -m64 -DARCH=x86_64 -I/home/wsm/litmus/liblitmus/include -I/home/wsm/litmus/liblitmus/arch/x86/include -I/home/wsm/litmus/liblitmus/arch/x86/include/uapi -I/home/wsm/litmus/liblitmus/arch/x86/include/generated/uapi -Iinclude/  -c -o 6.o 6.c
+/usr/bin/gcc         -m64                  6.o /usr/lib/x86_64-linux-gnu/libm.so  -L/home/wsm/litmus/liblitmus -llitmus -o 6
+6
+/usr/bin/gcc         -O2 -Wall -g -Wdeclaration-after-statement -D_PERIOD=350 -D_DEADLINE=700 -D_EXEC_COST=70  -D_XOPEN_SOURCE=600 -D_GNU_SOURCE -m64 -DARCH=x86_64 -I/home/wsm/litmus/liblitmus/include -I/home/wsm/litmus/liblitmus/arch/x86/include -I/home/wsm/litmus/liblitmus/arch/x86/include/uapi -I/home/wsm/litmus/liblitmus/arch/x86/include/generated/uapi -Iinclude/  -c -o 7.o 7.c
+/usr/bin/gcc         -m64                  7.o /usr/lib/x86_64-linux-gnu/libm.so  -L/home/wsm/litmus/liblitmus -llitmus -o 7
+7
+/usr/bin/gcc         -O2 -Wall -g -Wdeclaration-after-statement -D_PERIOD=400 -D_DEADLINE=800 -D_EXEC_COST=80  -D_XOPEN_SOURCE=600 -D_GNU_SOURCE -m64 -DARCH=x86_64 -I/home/wsm/litmus/liblitmus/include -I/home/wsm/litmus/liblitmus/arch/x86/include -I/home/wsm/litmus/liblitmus/arch/x86/include/uapi -I/home/wsm/litmus/liblitmus/arch/x86/include/generated/uapi -Iinclude/  -c -o 8.o 8.c
+/usr/bin/gcc         -m64                  8.o /usr/lib/x86_64-linux-gnu/libm.so  -L/home/wsm/litmus/liblitmus -llitmus -o 8
+8
+/usr/bin/gcc         -O2 -Wall -g -Wdeclaration-after-statement -D_PERIOD=450 -D_DEADLINE=900 -D_EXEC_COST=90  -D_XOPEN_SOURCE=600 -D_GNU_SOURCE -m64 -DARCH=x86_64 -I/home/wsm/litmus/liblitmus/include -I/home/wsm/litmus/liblitmus/arch/x86/include -I/home/wsm/litmus/liblitmus/arch/x86/include/uapi -I/home/wsm/litmus/liblitmus/arch/x86/include/generated/uapi -Iinclude/  -c -o 9.o 9.c
+/usr/bin/gcc         -m64                  9.o /usr/lib/x86_64-linux-gnu/libm.so  -L/home/wsm/litmus/liblitmus -llitmus -o 9
+9
+50000000
+PARSEC Benchmark Suite
+100000000
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+150000000
+PARSEC Benchmark Suite
+200000000
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+250000000
+PARSEC Benchmark Suite
+300000000
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+350000000
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+400000000
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+450000000
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+PARSEC Benchmark Suite
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
+Num of Options: 4096
+Num of Runs: 100
+Size of data: 163840
