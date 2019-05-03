@@ -122,7 +122,7 @@ struct rt_task {
 	task_class_t	cls;
 	budget_policy_t  budget_policy;  /* ignored by pfair */
 	release_policy_t release_policy;
-	int		mem_budget_task; /*111111111111111111*/
+	lt_t		mem_budget_task; /*111111111111111111*/
 };
 
 /* don't export internal data structures to user space (liblitmus) */

@@ -121,7 +121,7 @@ static struct bheap      gsnedf_cpu_heap;
 
 static rt_domain_t gsnedf;
 #define gsnedf_lock (gsnedf.ready_lock)
-
+asmlinkage long sys_get_rt_task_param(pid_t pid, struct rt_task __user * param);
 
 /* Uncomment this if you want to see all scheduling decisions in the
  * TRACE() log.
@@ -347,9 +347,9 @@ static noinline void gsnedf_job_arrival(struct task_struct* task)
 static void gsnedf_release_jobs(rt_domain_t* rt, struct bheap* tasks)
 {
 	unsigned long flags;
-
+	//cpu_entry_t* entry = &per_cpu(gsnedf_cpu_entries, cpu);	
 	raw_spin_lock_irqsave(&gsnedf_lock, flags);
-
+	//entry->scheduled->rt_param.task_params.mem_budget_task=100;
 	__merge_ready(rt, tasks);
 	check_for_preemptions();
 
@@ -406,6 +406,7 @@ static struct task_struct* gsnedf_schedule(struct task_struct * prev)
 	cpu_entry_t* entry = this_cpu_ptr(&gsnedf_cpu_entries);
 	int out_of_time, sleep, preempt, np, exists, blocks;
 	struct task_struct* next = NULL;
+//	lt_t membudget=1024;
 
 #ifdef CONFIG_RELEASE_MASTER
 	/* Bail out early if we are the release master.
@@ -418,7 +419,7 @@ static struct task_struct* gsnedf_schedule(struct task_struct * prev)
 #endif
 
 	raw_spin_lock(&gsnedf_lock);
-
+	struct rt_task task_params=prev->rt_param.task_params;
 	/* sanity checking */
 	BUG_ON(entry->scheduled && entry->scheduled != prev);
 	BUG_ON(entry->scheduled && !is_realtime(prev));
@@ -432,17 +433,31 @@ static struct task_struct* gsnedf_schedule(struct task_struct * prev)
 	np 	    = exists && is_np(entry->scheduled);
 	sleep	    = exists && is_completed(entry->scheduled);
 	preempt     = entry->scheduled != entry->linked;
-
+//	membudget   =entry->scheduled->rt_param.task_params.mem_budget_task;
+	//int membudget  =1024;
 #ifdef WANT_ALL_SCHED_EVENTS
 	TRACE_TASK(prev, "invoked gsnedf_schedule.\n");
 #endif
-//	pr_info("budget==%d\n",entry->scheduled.rt_param.task_params.mem_budget);
-	if (exists)
+/*	
+	if(entry->scheduled->rt_param.task_params.mem_budget_task!=NULL){
+	pr_info("budget==%d\n",entry->scheduled->rt_param.task_params.mem_budget_task);
+	}
+*/	
+/*	sys_get_rt_task_param(prev->pid,
+				&task_params);	
+	TRACE_TASK(prev,"membudget==%ld\n"
+		,task_params.mem_budget_task);*/
+/*	if(&entry->scheduled->rt_param.task_params.cpu!=NULL){	
+	TRACE_TASK(prev,"rt_task param cpu==%d\n"
+		,entry->scheduled->rt_param.task_params.cpu);}
+*/	if (exists){
+		sys_get_rt_task_param(prev->pid,&task_params);	
+		TRACE_TASK(prev,"membudget==%ld\n",task_params.mem_budget_task);
 		TRACE_TASK(prev,
 			   "blocks:%d out_of_time:%d np:%d sleep:%d preempt:%d "
 			   "state:%d sig:%d\n",
 			   blocks, out_of_time, np, sleep, preempt,
-			   prev->state, signal_pending(prev));
+			   prev->state, signal_pending(prev));}
 	if (entry->linked && preempt)
 		TRACE_TASK(prev, "will be preempted by %s/%d\n",
 			   entry->linked->comm, entry->linked->pid);
@@ -1005,6 +1020,7 @@ static long gsnedf_activate_plugin(void)
 		bheap_node_init(&entry->hn, entry);
 		entry->linked    = NULL;
 		entry->scheduled = NULL;
+//		entry->scheduled->rt_param.task_params.mem_budget_task=0;
 #ifdef CONFIG_RELEASE_MASTER
 		if (cpu != gsnedf.release_master) {
 #endif
