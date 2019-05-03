@@ -407,7 +407,7 @@ static struct task_struct* gsnedf_schedule(struct task_struct * prev)
 	int out_of_time, sleep, preempt, np, exists, blocks;
 	struct task_struct* next = NULL;
 //	lt_t membudget=1024;
-
+	struct rt_task task_params;
 #ifdef CONFIG_RELEASE_MASTER
 	/* Bail out early if we are the release master.
 	 * The release master never schedules any real-time tasks.
@@ -419,13 +419,14 @@ static struct task_struct* gsnedf_schedule(struct task_struct * prev)
 #endif
 
 	raw_spin_lock(&gsnedf_lock);
-	struct rt_task task_params=prev->rt_param.task_params;
+	
 	/* sanity checking */
 	BUG_ON(entry->scheduled && entry->scheduled != prev);
 	BUG_ON(entry->scheduled && !is_realtime(prev));
 	BUG_ON(is_realtime(prev) && !entry->scheduled);
 
 	/* (0) Determine state */
+	task_params =prev->rt_param.task_params;
 	exists      = entry->scheduled != NULL;
 	blocks      = exists && !is_current_running();
 	out_of_time = exists && budget_enforced(entry->scheduled)
@@ -451,8 +452,9 @@ static struct task_struct* gsnedf_schedule(struct task_struct * prev)
 	TRACE_TASK(prev,"rt_task param cpu==%d\n"
 		,entry->scheduled->rt_param.task_params.cpu);}
 */	if (exists){
+		
 		sys_get_rt_task_param(prev->pid,&task_params);	
-		TRACE_TASK(prev,"membudget==%ld\n",task_params.mem_budget_task);
+		TRACE_TASK(prev,"membudget==%d\n",task_params.mem_budget_task);
 		TRACE_TASK(prev,
 			   "blocks:%d out_of_time:%d np:%d sleep:%d preempt:%d "
 			   "state:%d sig:%d\n",
