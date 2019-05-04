@@ -294,7 +294,7 @@ static void check_for_preemptions(void)
 	 * idle. */
 	local = this_cpu_ptr(&gsnedf_cpu_entries);
 	task  = __peek_ready(&gsnedf);
-
+	struct rt_task task_params;
 	if (task && !local->linked
 #ifdef CONFIG_RELEASE_MASTER
 	    && likely(local->cpu != gsnedf.release_master)
@@ -302,6 +302,9 @@ static void check_for_preemptions(void)
 		) {
 		task = __take_ready(&gsnedf);
 		TRACE_TASK(task, "linking to local CPU %d to avoid IPI\n", local->cpu);
+		task_params =task->rt_param.task_params;
+		sys_get_rt_task_param(task->pid,&task_params);	
+		TRACE_TASK(task,"check preempt membudget==%d\n",task_params.mem_budget_task);
 		link_task_to_cpu(task, local);
 		preempt(local);
 	}
@@ -329,7 +332,9 @@ static void check_for_preemptions(void)
 		if (requeue_preempted_job(last->linked))
 			requeue(last->linked);
 #endif
-
+		task_params =task->rt_param.task_params;
+		sys_get_rt_task_param(task->pid,&task_params);	
+		TRACE_TASK(task,"check preempt membudget==%d\n",task_params.mem_budget_task);
 		link_task_to_cpu(task, last);
 		preempt(last);
 	}
