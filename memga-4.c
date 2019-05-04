@@ -79,9 +79,16 @@ enum hrtimer_restart period_timer_callback_master(struct hrtimer *timer);
 static void period_timer_callback_slave(void *info);
 static void memguard_process_overflow(struct irq_work *entry);
 static int throttle_thread(void *arg);
+static int get_membudget(int get_cpu,int get_membudget);
 
 module_param(g_budget_max_bw, int, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP);
 MODULE_PARM_DESC(g_budget_max_bw, "maximum memory bandwidth (MB/s)");
+
+static int get_membudget(int get_cpu,int get_membudget){
+	trace_printk("get cpu==%d,membudget==%d\n",get_cpu,get_membudget);
+	pr_info("get cpu==%d,membudget==%d\n",get_cpu,get_membudget);
+	return 0;
+}
 
 static inline u64 convert_mb_to_events(int mb)
 {
@@ -652,6 +659,6 @@ void cleanup_module(void){
 	pr_info("uninstall\n");
 	return;
 }
-
+EXPORT_SYMBOL(get_membudget);
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("wsm");
