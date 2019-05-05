@@ -26,7 +26,7 @@
 #include <linux/cpu.h>
 #include <asm/idle.h>
 #include <linux/sched.h>
-
+#include "memguardtest.h"
 #define MAX_NCPUS 64
 #define CACHE_LINE_SIZE 64
 
@@ -79,17 +79,17 @@ enum hrtimer_restart period_timer_callback_master(struct hrtimer *timer);
 static void period_timer_callback_slave(void *info);
 static void memguard_process_overflow(struct irq_work *entry);
 static int throttle_thread(void *arg);
-static int get_membudget(int get_cpu,int get_membudget);
+//static int get_membudget(int get_cpu,int get_membudget);
 
 module_param(g_budget_max_bw, int, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP);
 MODULE_PARM_DESC(g_budget_max_bw, "maximum memory bandwidth (MB/s)");
-
-static int get_membudget(int get_cpu,int get_membudget){
+/*
+int get_membudget(int get_cpu,int get_membudget){
 	trace_printk("get cpu==%d,membudget==%d\n",get_cpu,get_membudget);
 	pr_info("get cpu==%d,membudget==%d\n",get_cpu,get_membudget);
 	return 0;
 }
-
+*/
 static inline u64 convert_mb_to_events(int mb)
 {
 	return div64_u64((u64)mb*1024*1024,
@@ -383,9 +383,9 @@ static const struct file_operations memguard_limit_fops = {
 };
 
 static int memguard_init_debugfs(void){
-	memguard_dir=debugfs_create_dir("memguard",NULL);
+	memguard_dir=debugfs_create_dir("memguard",NULL););
 	BUG_ON(!memguard_dir);
-	debugfs_create_file("limit",0444,memguard_dir,NULL,&memguard_limit_fops);
+	debugfs_create_file("limit",0444,memguard_dir,NULL,&memguard_limit_fops
 	return 0;
 }
 
@@ -605,7 +605,7 @@ int init_module(void){
 	pr_info("S\n");
 	start_counters();
 	smp_mb();
-
+	
 	pr_info("Start period timer (period=%lld us)\n",div64_u64(global->period_in_ktime.tv64, 1000));
 
 	get_cpu();
@@ -659,6 +659,6 @@ void cleanup_module(void){
 	pr_info("uninstall\n");
 	return;
 }
-EXPORT_SYMBOL(get_membudget);
+//EXPORT_SYMBOL(get_membudget);
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("wsm");

@@ -122,7 +122,7 @@ static struct bheap      gsnedf_cpu_heap;
 static rt_domain_t gsnedf;
 #define gsnedf_lock (gsnedf.ready_lock)
 asmlinkage long sys_get_rt_task_param(pid_t pid, struct rt_task __user * param);
-extern int get_membudget(int get_cpu,int get_membudget);
+
 /* Uncomment this if you want to see all scheduling decisions in the
  * TRACE() log.
 #define WANT_ALL_SCHED_EVENTS
@@ -305,7 +305,7 @@ static void check_for_preemptions(void)
 		task_params =task->rt_param.task_params;
 		sys_get_rt_task_param(task->pid,&task_params);	
 		TRACE_TASK(task,"check preempt membudget==%d\n",task_params.mem_budget_task);
-		get_membudget(local->cpu,task_params.mem_budget_task);
+
 		link_task_to_cpu(task, local);
 		preempt(local);
 	}
@@ -336,7 +336,7 @@ static void check_for_preemptions(void)
 		task_params =task->rt_param.task_params;
 		sys_get_rt_task_param(task->pid,&task_params);	
 		TRACE_TASK(task,"check preempt membudget==%d\n",task_params.mem_budget_task);
-		get_membudget(last->cpu,task_params.mem_budget_task);
+
 		link_task_to_cpu(task, last);
 		preempt(last);
 	}
@@ -445,12 +445,11 @@ static struct task_struct* gsnedf_schedule(struct task_struct * prev)
 	if (exists){
 		
 		sys_get_rt_task_param(prev->pid,&task_params);	
-		TRACE_TASK(prev,"membudget==%d\n",task_params.mem_budget_task);
 		TRACE_TASK(prev,
 			   "blocks:%d out_of_time:%d np:%d sleep:%d preempt:%d "
-			   "state:%d sig:%d\n",
+			   "state:%d sig:%d,membudget=%d\n",
 			   blocks, out_of_time, np, sleep, preempt,
-			   prev->state, signal_pending(prev));}
+			   prev->state, signal_pending(prev),task_params.mem_budget_task);}
 	if (entry->linked && preempt)
 		TRACE_TASK(prev, "will be preempted by %s/%d\n",
 			   entry->linked->comm, entry->linked->pid);

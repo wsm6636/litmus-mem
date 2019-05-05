@@ -3,13 +3,15 @@ LIBLITMUS ?= /home/wsm/litmus/liblitmus
 include ${LIBLITMUS}/inc/config.makefile
 CPPFLAGS += -Iinclude/
 #CFLAGS +=-D_PERIOD=100 -D_DEADLINE=100 -D_EXEC_COST=10 -D__MEM_BUDGET=300
-CFLAGS +=-D_PERIOD=${period} -D_DEADLINE=${deadline} -D_EXEC_COST=${cost} -D__MEM_BUDGET=${budget}
+CFLAGS +=-D_PERIOD=${period} -D_DEADLINE=${deadline} -D_EXEC_COST=${cost} 
+CFLAGS +=-D__MEM_BUDGET=${budget}
 all=${a}
 #all=blackscholes
 .PHONY:all clean  
 all:${all}  
 clean:
 	rm -f ${all} *.o *.d
+#obj-blackscholes=${a}.o
 obj-blackscholes=blackscholes.o
 blackscholes: ${obj-blackscholes} -lm  
 

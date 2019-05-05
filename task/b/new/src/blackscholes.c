@@ -12,6 +12,7 @@
 #include <math.h>
 #include <string.h>
 #include "litmus.h"
+#include "rt_param.h"
 /*#define PERIOD ms2ns(1000)
 #define DEADLINE ms2ns(2000)
 #define EXEC_COST ms2ns(20)
