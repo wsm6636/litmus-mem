@@ -141,19 +141,12 @@ extern int get_master;
 //extern int get_curbudget;
 extern int get_cur_budget(int g_cpu);
 //extern int get_taskbudget;
+
 /* Uncomment this if you want to see all scheduling decisions in the
  * TRACE() log.
 #define WANT_ALL_SCHED_EVENTS
  */
-/*
-static int get_edfbudget(int get_master,int get_curbudget){
-	cpu_entry_t *meminfo = this_cpu_ptr(&gsnedf_cpu_entries);
-	meminfo->mem_master=get_master;
-	meminfo->cur_budget=get_curbudget;
-	printk("mem_master==%d,cur_budget==%d\n",meminfo->mem_master,meminfo->cur_budget);
-	return 0;
-}
-*/
+
 /*
 static int get_edf(cpu_entry_t *meminfo){
         meminfo->cur_budget=get_curbudget;
@@ -342,20 +335,21 @@ static void check_for_preemptions(void)
 		local->cur_budget=get_cur_budget(local->cpu);
 		TRACE_TASK(task, "get curbudget==%d\n", local->cur_budget);
 //		get_edf(local);
-//		TRACE("mem_master==%d,cur_budget==%d\n",get_master,get_curbudget);	
-//		if(task_params.mem_budget_task>local->cur_budget){
-//			__add_ready(&gsnedf, task);
+	
+		if(task_params.mem_budget_task>local->cur_budget){
+			__add_ready(&gsnedf, task);
 			smp_mb();
 			get_membudget(local->cpu,task_params.mem_budget_task);
-//			TRACE_TASK(task,"task_budget>cur_budget\n");
+			TRACE_TASK(task,"task_budget%d>cur_budget%d\n"
+				,task_params.mem_budget_task,local->cur_budget);
 
 //			link_task_to_cpu(task, local);
-//                       preempt(local);
-//		}else{
+//                        preempt(local);
+		}else{
 			smp_mb();			
 			link_task_to_cpu(task, local);
 			preempt(local);
-//		}
+		}
 
 	}
 #endif
@@ -390,20 +384,21 @@ static void check_for_preemptions(void)
 		last->cur_budget=get_cur_budget(last->cpu);
 		TRACE_TASK(task, "get curbudget==%d\n", last->cur_budget);	
 //		get_edf(last);
-//		TRACE("mem_master==%d,cur_budget==%d\n",get_master,get_curbudget);		
-//		if(task_params.mem_budget_task>last->cur_budget){
-//			__add_ready(&gsnedf, task);	
+		
+		if(task_params.mem_budget_task>last->cur_budget){
+			__add_ready(&gsnedf, task);	
 			smp_mb();		
                         get_membudget(last->cpu,task_params.mem_budget_task);
- //               	TRACE_TASK(task,"task_budget>cur_budget\n"); 
+                	TRACE_TASK(task,"task_budget%d>cur_budget%d\n"
+				,task_params.mem_budget_task,last->cur_budget);
 //			break;
 //		        link_task_to_cpu(task, last);
 //                       preempt(last);
-//}else{		
+}else{		
 			smp_mb();
                         link_task_to_cpu(task, last);
                         preempt(last);
- //               }
+                }
 	}
 }
 

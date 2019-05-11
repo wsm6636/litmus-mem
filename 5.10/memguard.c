@@ -123,7 +123,6 @@ static void __update_curbudget(void *info){
 	
 	get_curbudget=(unsigned long)convert_events_to_mb(cinfo->limit);
 	trace_printk("get-curbudget==%d \n",get_curbudget);
-//	return get_curbudget;
 }
 int get_membudget(int get_cpu,int get_membudget){
 	
@@ -271,12 +270,7 @@ static void period_timer_callback_slave(void *info){
 	}	
 
 	cinfo->throttled_task=NULL;
-//	cinfo->cur_budget=cinfo->budget;
-/*	if(g_cpu!=NULL&&cpu==g_cpu){	
-	get_curbudget=cinfo->cur_budget;
-	printk("slave at%d,g_cpu==%d,get_curbudget==\n",cpu,g_cpu,get_curbudget);
-	}
-*/	local64_set(&cinfo->event->hw.period_left,cinfo->budget);
+	local64_set(&cinfo->event->hw.period_left,cinfo->budget);
 	smp_mb();
 	cinfo->event->pmu->start(cinfo->event,PERF_EF_RELOAD);
 }
@@ -490,7 +484,6 @@ static void start_counters(void)
 static void __reset_stats(void *info){
 	struct core_info *cinfo=this_cpu_ptr(core_info);
 	trace_printk("CPU%d\n",smp_processor_id());
-	//cinfo->cur_budget=cinfo->budget;
 	cinfo->period_cnt=0;
 	cinfo->old_val=perf_event_count(cinfo->event);
 	cinfo->throttled_error=0;
@@ -573,8 +566,7 @@ int __init init_mem(void){
 	spin_lock_init(&global->lock);
 	global->period_in_ktime=ktime_set(0,g_period_us*1000);	
 	global->max_budget = convert_mb_to_events(g_budget_max_bw);
-//	global->g_cpu=NULL;
-//	global->g_budget=NULL;
+
 	cpumask_copy(global->active_mask,cpu_online_mask);	
 
 	core_info=alloc_percpu(struct core_info);
@@ -590,7 +582,7 @@ int __init init_mem(void){
 		mb=div64_u64((u64)g_budget_max_bw * g_budget_pct[i],100);
 		
 		budget=convert_mb_to_events(mb);
-//		cinfo->cur_budget=mb;
+
 		pr_info("budget[%d]=%d(%d MB/s)\n",i,budget,mb);
 
 		/* create performance counter */
@@ -626,8 +618,7 @@ int __init init_mem(void){
 	global->master=smp_processor_id();
 	pr_info("master=%d\n",global->master);
 	get_master=global->master;
-//	g_cpu=NULL;
-//	get_curbudget=360;
+
 	hrtimer_init(&global->hr_timer,CLOCK_MONOTONIC,HRTIMER_MODE_REL_PINNED);
 	global->hr_timer.function=&period_timer_callback_master;
 	hrtimer_start(&global->hr_timer,global->period_in_ktime,HRTIMER_MODE_REL_PINNED);
