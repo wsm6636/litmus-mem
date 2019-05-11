@@ -46,7 +46,7 @@ struct core_info {
 	/* user configurations */
 	int budget;              /* assigned budget */
 	int limit;
-	//int cur_budget;
+	int cur_budget;
 	/* for control logic */
 	volatile struct task_struct * throttled_task;
 	ktime_t throttled_time;  /* absolute time when throttled */
@@ -64,8 +64,7 @@ struct core_info {
 	long period_cnt;         /* active periods count */
 };
 
-int get_master,get_curbudget,g_cpu;
-//get_taskbudget
+int get_master,get_curbudget;
 static struct memguard_info memguard_info;
 static struct core_info __percpu *core_info;
 
@@ -81,9 +80,7 @@ static void period_timer_callback_slave(void *info);
 static void memguard_process_overflow(struct irq_work *entry);
 static int throttle_thread(void *arg);
 int get_membudget(int get_cpu,int get_membudget);
-
-extern int get_edfbudget(int get_master,int get_curbudget);
-//asmlinkage int get_edfbudget(int get_master,int get_curbudget);
+int get_cur_budget(int g_cpu);
 module_param(g_budget_max_bw, int, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP);
 MODULE_PARM_DESC(g_budget_max_bw, "maximum memory bandwidth (MB/s)");
 
@@ -114,7 +111,33 @@ static inline u64 memguard_event_used(struct core_info *cinfo)
 	trace_printk("perf_event_count(cinfo->event)=%llu\n",perf_event_count(cinfo->event));
 	return perf_event_count(cinfo->event) - cinfo->old_val;
 }
-
+static void __update_budget(void *info){
+	struct core_info *cinfo=this_cpu_ptr(core_info);
+	cinfo->limit=(unsigned long)info;
+	smp_mb();	
+	trace_printk("MSG: new budget of Core%d is %d \n",smp_processor_id(),cinfo->budget);
+}
+static void __update_curbudget(void *info){
+	struct core_info *cinfo=this_cpu_ptr(core_info);
+	smp_mb();
+//	int get_curbudget;	
+	get_curbudget=(unsigned long)convert_events_to_mb(cinfo->limit);
+	trace_printk("get-curbudget==%d \n",get_curbudget);
+//	return get_curbudget;
+}
+int get_membudget(int get_cpu,int get_membudget){
+	
+	int g_budget;
+	g_budget=(unsigned long)convert_mb_to_events(get_membudget);
+	smp_call_function_single(get_cpu,__update_budget,g_budget,0);	
+	
+	trace_printk("get cpu==%d,membudget==%d.\n",get_cpu,get_membudget);
+	return 0;
+}
+int get_cur_budget(int g_cpu){
+	smp_call_function_single(g_cpu,__update_curbudget,NULL,0);
+	return get_curbudget;
+}
 static void __start_throttle(void *info){
          struct core_info *cinfo = (struct core_info *)info;
          ktime_t start=ktime_get();
@@ -248,10 +271,12 @@ static void period_timer_callback_slave(void *info){
 	}	
 
 	cinfo->throttled_task=NULL;
-	if(cpu==g_cpu){	
-	get_curbudget=(unsigned long)convert_events_to_mb(cinfo->budget);
+//	cinfo->cur_budget=cinfo->budget;
+/*	if(g_cpu!=NULL&&cpu==g_cpu){	
+	get_curbudget=cinfo->cur_budget;
+	printk("slave at%d,g_cpu==%d,get_curbudget==\n",cpu,g_cpu,get_curbudget);
 	}
-	local64_set(&cinfo->event->hw.period_left,cinfo->budget);
+*/	local64_set(&cinfo->event->hw.period_left,cinfo->budget);
 	smp_mb();
 	cinfo->event->pmu->start(cinfo->event,PERF_EF_RELOAD);
 }
@@ -297,25 +322,7 @@ enum hrtimer_restart period_timer_callback_master(struct hrtimer *timer){
 
 }
 
-static void __update_budget(void *info){
-	struct core_info *cinfo=this_cpu_ptr(core_info);
-	cinfo->limit=(unsigned long)info;
-	smp_mb();	
-//	get_curbudget=cinfo->limit;
-	trace_printk("MSG: new budget of Core%d is %d \n",smp_processor_id(),cinfo->budget);
-}
 
-int get_membudget(int get_cpu,int get_membudget){
-	
-	int g_budget;
-	g_budget=(unsigned long)convert_mb_to_events(get_membudget);
-//	get_taskbudget=g_budget;
-	g_cpu=get_cpu;
-	smp_call_function_single(get_cpu,__update_budget,g_budget,0);	
-	trace_printk("get cpu==%d,membudget==%d.\n",get_cpu,get_membudget);
-	pr_info("get cpu==%d,membudget==%d.\n",get_cpu,get_membudget);
-	return 0;
-}
 
 static ssize_t memguard_limit_write(struct file *filp,const char __user *ubuf,size_t cnt,loff_t *ppos)
 {
@@ -583,7 +590,7 @@ int __init init_mem(void){
 		mb=div64_u64((u64)g_budget_max_bw * g_budget_pct[i],100);
 		
 		budget=convert_mb_to_events(mb);
-		get_curbudget=mb;
+//		cinfo->cur_budget=mb;
 		pr_info("budget[%d]=%d(%d MB/s)\n",i,budget,mb);
 
 		/* create performance counter */
@@ -619,6 +626,8 @@ int __init init_mem(void){
 	global->master=smp_processor_id();
 	pr_info("master=%d\n",global->master);
 	get_master=global->master;
+//	g_cpu=NULL;
+//	get_curbudget=360;
 	hrtimer_init(&global->hr_timer,CLOCK_MONOTONIC,HRTIMER_MODE_REL_PINNED);
 	global->hr_timer.function=&period_timer_callback_master;
 	hrtimer_start(&global->hr_timer,global->period_in_ktime,HRTIMER_MODE_REL_PINNED);
@@ -670,7 +679,7 @@ module_init(init_mem);
 module_exit(exit_mem);
 EXPORT_SYMBOL(get_membudget);
 EXPORT_SYMBOL(get_master);
-EXPORT_SYMBOL(get_curbudget);
-//EXPORT_SYMBOL(get_taskbudget);
+//EXPORT_SYMBOL(get_curbudget);
+EXPORT_SYMBOL(get_cur_budget);
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("wsm");

@@ -1,4 +1,4 @@
-obj-m=test5.o
+obj-m=test1.o
 
 KVERSION=$(shell uname -r)
 BLDDIR=/lib/modules/$(KVERSION)/build

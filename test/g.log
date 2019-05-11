@@ -1,0 +1,55 @@
+12 P7 [vprintk_emit@kernel/printk/printk.c:1854]: 3BUG: using smp_processor_id() in preemptible [00000000] code: insmod/2737
+13 P7 [vprintk_emit@kernel/printk/printk.c:1854]: caller is debug_smp_processor_id+0x17/0x20
+14 P7 [vprintk_emit@kernel/printk/printk.c:1854]: dCPU: 7 PID: 2737 Comm: insmod Tainted: P        W  OE   4.9.30-litmus #130
+15 P7 [vprintk_emit@kernel/printk/printk.c:1854]: dHardware name: ASUSTeK COMPUTER INC. Z11PA-D8 Series/Z11PA-D8 Series, BIOS 0401 11/30/2017
+16 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  ffffba798ae77c1817 P7 [vprintk_emit@kernel/printk/printk.c:1854]: c ffffffff9c8356a418 P7 [vprintk_emit@kernel/printk/printk.c:1854]: c 000000000000000719 P7 [vprintk_emit@kernel/printk/printk.c:1854]: c ffffffff9d0d163f20 P7 [vprintk_emit@kernel/printk/printk.c:1854]: c
+21 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  ffffba798ae77c4822 P7 [vprintk_emit@kernel/printk/printk.c:1854]: c ffffffff9c855ecd23 P7 [vprintk_emit@kernel/printk/printk.c:1854]: c 00000000000134e024 P7 [vprintk_emit@kernel/printk/printk.c:1854]: c 000000000000000125 P7 [vprintk_emit@kernel/printk/printk.c:1854]: c
+26 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  00000000000000c827 P7 [vprintk_emit@kernel/printk/printk.c:1854]: c ffff8f6b15983a8028 P7 [vprintk_emit@kernel/printk/printk.c:1854]: c ffffba798ae77c5829 P7 [vprintk_emit@kernel/printk/printk.c:1854]: c ffffffff9c855ee730 P7 [vprintk_emit@kernel/printk/printk.c:1854]: c
+31 P7 [vprintk_emit@kernel/printk/printk.c:1854]: Call Trace:
+32 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  [<ffffffff9c8356a4>] dump_stack+0x65/0x91
+33 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  [<ffffffff9c855ecd>] check_preemption_disabled+0xed/0xf0
+34 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  [<ffffffff9c855ee7>] debug_smp_processor_id+0x17/0x20
+35 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  [<ffffffff9c8239b4>] get_edfbudget+0x24/0x90
+36 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  [<ffffffffc035a000>] ? 0xffffffffc035a000
+37 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  [<ffffffffc035a013>] init_module+0x13/0x23 [test1]
+38 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  [<ffffffff9c402190>] do_one_initcall+0x50/0x170
+39 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  [<ffffffff9c5994d2>] ? do_init_module+0x27/0x1d6
+40 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  [<ffffffff9c59950a>] do_init_module+0x5f/0x1d6
+41 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  [<ffffffff9c50aecb>] load_module+0x1efb/0x2800
+42 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  [<ffffffff9c507f40>] ? __symbol_put+0x90/0x90
+43 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  [<ffffffff9c7c04be>] ? ima_post_read_file+0x7e/0xa0
+44 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  [<ffffffff9c7787cb>] ? security_kernel_post_read_file+0x6b/0x80
+45 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  [<ffffffff9c50ba66>] SYSC_finit_module+0xf6/0x110
+46 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  [<ffffffff9c50ba9e>] SyS_finit_module+0xe/0x10
+47 P7 [vprintk_emit@kernel/printk/printk.c:1854]:  [<ffffffff9ccc277b>] entry_SYSCALL_64_fastpath+0x1e/0xad
+48 P7 [get_edfbudget@litmus/sched_gsn_edf.c:150]: mem_master==1,cur_budget==200
+49 P7 [vprintk_emit@kernel/printk/printk.c:1854]: test is start
+50 P2 [vprintk_emit@kernel/printk/printk.c:1854]: 6test3 is start
+51 P2 [vprintk_emit@kernel/printk/printk.c:1854]: 6master==4,curbudget==200
+52 P6 [vprintk_emit@kernel/printk/printk.c:1854]: 6test2 is start
+53 P6 [vprintk_emit@kernel/printk/printk.c:1854]: 6master==4,curbudget==200
+54 P2 [vprintk_emit@kernel/printk/printk.c:1854]: 6SGI XFS with ACLs, security attributes, realtime, no debug enabled
+55 P3 [vprintk_emit@kernel/printk/printk.c:1854]: 6JFS: nTxBlock = 8192, nTxLock = 65536
+56 P3 [vprintk_emit@kernel/printk/printk.c:1854]: 6ntfs: driver 2.1.32 [Flags: R/O MODULE].
+57 P3 [vprintk_emit@kernel/printk/printk.c:1854]: 6QNX4 filesystem 0.2.3 registered.
+58 P7 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: sse2x1   gen()  7707 MB/s
+59 P7 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: sse2x1   xor()  5590 MB/s
+60 P7 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: sse2x2   gen()  9540 MB/s
+61 P7 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: sse2x2   xor()  6382 MB/s
+62 P7 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: sse2x4   gen() 10929 MB/s
+63 P7 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: sse2x4   xor()  6167 MB/s
+64 P7 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: avx2x1   gen() 15033 MB/s
+65 P7 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: avx2x2   gen() 18915 MB/s
+66 P7 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: avx2x4   gen() 21278 MB/s
+67 P7 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: avx512x1 gen() 20533 MB/s
+68 P5 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: avx512x1 xor() 11405 MB/s
+69 P5 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: avx512x2 gen() 24602 MB/s
+70 P5 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: avx512x2 xor() 14120 MB/s
+71 P5 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: avx512x4 gen() 29387 MB/s
+72 P5 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: avx512x4 xor()  9984 MB/s
+73 P5 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: using algorithm avx512x4 gen() 29387 MB/s
+74 P5 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: .... xor() 9984 MB/s, rmw enabled
+75 P5 [vprintk_emit@kernel/printk/printk.c:1854]: 6raid6: using avx512x2 recovery algorithm
+76 P5 [vprintk_emit@kernel/printk/printk.c:1854]: 6xor: automatically using best checksumming function   avx       
+77 P5 [vprintk_emit@kernel/printk/printk.c:1854]: 6Btrfs loaded, crc32c=crc32c-intel
+78 P7 [vprintk_emit@kernel/printk/printk.c:1854]: 7rfkill: input handler enabled

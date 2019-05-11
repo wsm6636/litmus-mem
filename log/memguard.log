@@ -1,0 +1,54 @@
+     gnome-shell-1651  [002] d.h.  1511.257471: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.257471: memguard_process_overflow: perf_event_count(cinfo->event)=27982170
+     gnome-shell-1651  [002] d.h.  1511.258584: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.258585: memguard_process_overflow: perf_event_count(cinfo->event)=27987088
+     gnome-shell-1651  [002] d.h.  1511.259362: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.259363: memguard_process_overflow: perf_event_count(cinfo->event)=27992011
+     gnome-shell-1651  [002] d.h.  1511.260779: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.260780: memguard_process_overflow: perf_event_count(cinfo->event)=27996927
+     gnome-shell-1651  [002] d.h.  1511.273062: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.273064: memguard_process_overflow: perf_event_count(cinfo->event)=28003104
+     gnome-shell-1651  [002] d.h.  1511.273611: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.273612: memguard_process_overflow: perf_event_count(cinfo->event)=28008019
+     gnome-shell-1651  [002] d.h.  1511.275008: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.275009: memguard_process_overflow: perf_event_count(cinfo->event)=28012940
+     gnome-shell-1651  [002] d.h.  1511.275683: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.275683: memguard_process_overflow: perf_event_count(cinfo->event)=28017861
+     gnome-shell-1651  [002] d.h.  1511.690472: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.690473: memguard_process_overflow: perf_event_count(cinfo->event)=28036630
+     gnome-shell-1651  [002] d.h.  1511.691527: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.691527: memguard_process_overflow: perf_event_count(cinfo->event)=28041548
+     gnome-shell-1651  [002] d.h.  1511.692410: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.692411: memguard_process_overflow: perf_event_count(cinfo->event)=28046468
+     gnome-shell-1651  [002] d.h.  1511.693301: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.693301: memguard_process_overflow: perf_event_count(cinfo->event)=28051395
+     gnome-shell-1651  [002] d.h.  1511.694696: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.694696: memguard_process_overflow: perf_event_count(cinfo->event)=28056315
+     gnome-shell-1651  [002] d.h.  1511.696113: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.696115: memguard_process_overflow: perf_event_count(cinfo->event)=28061245
+     gnome-shell-1651  [002] d.h.  1511.696471: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.696471: memguard_process_overflow: perf_event_count(cinfo->event)=28066162
+     gnome-shell-1651  [002] d.h.  1511.697496: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.697496: memguard_process_overflow: perf_event_count(cinfo->event)=28071081
+     gnome-shell-1651  [002] d.h.  1511.698477: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.698477: memguard_process_overflow: perf_event_count(cinfo->event)=28076000
+     gnome-shell-1651  [002] d.h.  1511.700562: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.700562: memguard_process_overflow: perf_event_count(cinfo->event)=28083254
+     gnome-shell-1651  [002] d.h.  1511.709604: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1511.709605: memguard_process_overflow: perf_event_count(cinfo->event)=28091366
+     gnome-shell-1651  [002] d.h.  1512.280839: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1512.280840: memguard_process_overflow: perf_event_count(cinfo->event)=28100415
+     gnome-shell-1651  [002] d.h.  1512.281774: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1512.281775: memguard_process_overflow: perf_event_count(cinfo->event)=28105332
+     gnome-shell-1651  [002] d.h.  1512.881595: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1512.881595: memguard_process_overflow: perf_event_count(cinfo->event)=28114518
+     gnome-shell-1651  [002] d.h.  1513.482805: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1513.482806: memguard_process_overflow: perf_event_count(cinfo->event)=28125578
+     gnome-shell-1651  [002] d.h.  1514.083483: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1514.083484: memguard_process_overflow: perf_event_count(cinfo->event)=28134019
+     gnome-shell-1651  [002] d.h.  1514.084866: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1514.084867: memguard_process_overflow: perf_event_count(cinfo->event)=28138945
+     gnome-shell-1651  [002] d.h.  1515.186602: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1515.186603: memguard_process_overflow: perf_event_count(cinfo->event)=28153453
+     gnome-shell-1651  [002] d.h.  1515.285507: memguard_process_overflow: overflow at 2
+     gnome-shell-1651  [002] d.h.  1515.285508: memguard_process_overflow: perf_event_count(cinfo->event)=28162441
