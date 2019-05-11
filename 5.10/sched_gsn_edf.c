@@ -1147,7 +1147,7 @@ static int __init init_gsn_edf(void)
 		entry->hn        = &gsnedf_heap_node[cpu];
 		bheap_node_init(&entry->hn, entry);
 		entry->cur_budget= 360;
-//		entry->mem_master= NULL;		
+		
 	}
 
 	edf_domain_init(&gsnedf, NULL, gsnedf_release_jobs);

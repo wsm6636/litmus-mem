@@ -120,7 +120,7 @@ static void __update_budget(void *info){
 static void __update_curbudget(void *info){
 	struct core_info *cinfo=this_cpu_ptr(core_info);
 	smp_mb();
-//	int get_curbudget;	
+	
 	get_curbudget=(unsigned long)convert_events_to_mb(cinfo->limit);
 	trace_printk("get-curbudget==%d \n",get_curbudget);
 //	return get_curbudget;
